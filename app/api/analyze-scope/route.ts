@@ -624,7 +624,7 @@ export async function POST(
       sow,
       prTitle,
       prChanges,
-      hourlyRate = 50,
+      hourlyRate = 1,
     } = body;
 
     /*

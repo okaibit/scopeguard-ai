@@ -26,6 +26,7 @@ type SavedAudit = {
  change: string;
  estimate: string;
  overage: string;
+ hourlyRate: number;
  sow: string;
  sowFilename: string;
  confidence: number;
@@ -198,7 +199,7 @@ export default function PRIntakePage() {
  ),
 
  hourlyRate: Number(
- analysis.hourlyRate ?? 50
+ analysis.hourlyRate ?? 1
  ),
 
  overage: Number(
@@ -237,6 +238,8 @@ export default function PRIntakePage() {
  estimate: `${normalizedResult.estimatedHours} hours`,
 
  overage: `$${normalizedResult.overage} USDC`,
+
+ hourlyRate: normalizedResult.hourlyRate,
 
  sow,
 

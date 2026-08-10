@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+const STORAGE_KEY = "scopeguard-current-audit";
 type AuditStatus =
   | "Detected"
   | "Analyzing"
@@ -15,6 +16,7 @@ type Audit = {
   change: string;
   estimate: string;
   overage: string;
+  hourlyRate: number;
 };
 const initialAudits: Audit[] = [
   {
@@ -27,6 +29,7 @@ const initialAudits: Audit[] = [
       "PDF export functionality and supporting export controls.",
     estimate: "3 hours",
     overage: "$3 USDC",
+    hourlyRate: 1,
   },
   {
     id: "SG-041",
@@ -38,6 +41,7 @@ const initialAudits: Audit[] = [
       "Dashboard layout and responsive styling improvements.",
     estimate: "2 hours",
     overage: "$3 USDC",
+    hourlyRate: 1,
   },
   {
     id: "SG-040",
@@ -49,6 +53,7 @@ const initialAudits: Audit[] = [
       "Fixed authentication redirect handling.",
     estimate: "1 hour",
     overage: "$3 USDC",
+    hourlyRate: 1,
   },
 ];
 const TEST_SETTLEMENT_AMOUNT = "3";
@@ -71,6 +76,95 @@ export default function AuditDashboard() {
     useState("");
   const [transactionLink, setTransactionLink] =
     useState("");
+
+  useEffect(() => {
+    const storedAudit = window.localStorage.getItem(
+      STORAGE_KEY
+    );
+
+    if (storedAudit) {
+      try {
+        const savedAudit = JSON.parse(storedAudit);
+
+        const dashboardAudit = {
+          id: savedAudit.id,
+          pr: savedAudit.pr,
+          title: savedAudit.title,
+          developer: savedAudit.developer,
+          status: savedAudit.status,
+          change: savedAudit.change,
+          estimate: savedAudit.estimate,
+          overage: savedAudit.overage,
+          hourlyRate: Number(savedAudit.hourlyRate ?? 1),
+        };
+
+        setAudits((current) => {
+          const existing = current.some(
+            (audit) => audit.id === dashboardAudit.id
+          );
+
+          return existing
+            ? current.map((audit) =>
+                audit.id === dashboardAudit.id
+                  ? { ...audit, ...dashboardAudit }
+                  : audit
+              )
+            : [dashboardAudit, ...current];
+        });
+
+        setSelectedAudit(dashboardAudit);
+      } catch {
+        window.localStorage.removeItem(
+          STORAGE_KEY
+        );
+      }
+    }
+
+    const storedSettlement =
+      window.localStorage.getItem(
+        "scopeguard-settlement"
+      );
+
+    if (!storedSettlement) {
+      return;
+    }
+
+    try {
+      const settlement = JSON.parse(
+        storedSettlement
+      );
+
+      if (settlement.status !== "Settled") {
+        return;
+      }
+
+      setTransactionHash(
+        settlement.transactionHash || ""
+      );
+      setTransactionLink(
+        settlement.transactionLink || ""
+      );
+
+      setAudits((current) =>
+        current.map((audit) =>
+          audit.id === settlement.auditId
+            ? { ...audit, status: "Settled" }
+            : audit
+        )
+      );
+
+      setSelectedAudit((current) =>
+        current.id === settlement.auditId
+          ? { ...current, status: "Settled" }
+          : current
+      );
+    } catch {
+      window.localStorage.removeItem(
+        "scopeguard-settlement"
+      );
+    }
+  }, []);
+
   const recommendedSettlement =
     selectedAudit.overage;
   const runAnalysis = () => {
@@ -388,7 +482,7 @@ export default function AuditDashboard() {
                 />
                 <SmallStat
                   label="Hourly Rate"
-                  value="$50"
+                  value={`$${selectedAudit.hourlyRate}`}
                 />
                 <SmallStat
                   label="AI Recommended Overage"
@@ -408,7 +502,7 @@ export default function AuditDashboard() {
                   </p>
                   <p className="mt-1 text-sm text-slate-500">
                     Calculated from {selectedAudit.estimate} of
-                    additional work at a $50 hourly rate.
+                    additional work at a $1 USDC/hour demo rate.
                   </p>
                 </div>
                 <div className="rounded-xl border border-cyan-400/20 bg-cyan-400/5 px-5 py-4">

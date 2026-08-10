@@ -57,9 +57,28 @@ execute: true,
         );
       }
       setAnalysisState("success");
-      setStatus("KeeperHub execution request received");
+      setStatus("KeeperHub execution completed");
+
+      window.localStorage.setItem(
+        "scopeguard-settlement",
+        JSON.stringify({
+          auditId: "SG-042",
+          status: "Settled",
+          amount: data.settlement?.amount || "3",
+          currency: data.settlement?.currency || "USDC",
+          transactionHash:
+            data.transactionHash ||
+            data.keeperHub?.transactionHash ||
+            "",
+          transactionLink:
+            data.transactionLink ||
+            data.keeperHub?.transactionLink ||
+            "",
+        })
+      );
+
       setExecutionMessage(
-        "Settlement request has been handed to the execution layer."
+        "Settlement confirmed on Base Sepolia. Audit proof has been recorded."
       );
     } catch (error) {
       setAnalysisState("error");
@@ -224,7 +243,7 @@ execute: true,
                   />
                   <Finding
                     title="Settlement recommended"
-                    description="The detected work represents an estimated 3 additional engineering hours."
+                    description="The detected work represents an estimated 3 additional engineering hours at a $1 USDC/hour demo rate."
                   />
                 </div>
               </div>
@@ -236,7 +255,7 @@ execute: true,
                 />
                 <Metric
                   label="Hourly rate"
-                  value="$50"
+                  value="$1"
                 />
                 <Metric
                   label="Overage"
