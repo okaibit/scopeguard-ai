@@ -54,7 +54,58 @@ export default function PRIntakePage() {
         throw new Error(data.error || "Scope analysis failed.");
       }
 
-      setResult(data);
+      /*
+       * The API returns:
+       *
+       * {
+       *   success: true,
+       *   analysis: {
+       *     ...
+       *   }
+       * }
+       *
+       * So we read data.analysis here.
+       */
+      const analysis = data.analysis;
+
+      if (!analysis) {
+        throw new Error(
+          "ScopeGuard returned an invalid analysis response."
+        );
+      }
+
+      const normalizedResult: AnalysisResult = {
+        decision:
+          analysis.scopeStatus === "out_of_scope"
+            ? "Out of Scope"
+            : "In Scope",
+
+        confidence: Number(analysis.confidence ?? 0),
+
+        summary:
+          analysis.reasoning ||
+          "ScopeGuard completed the analysis.",
+
+        detectedChanges: Array.isArray(
+          analysis.detectedChanges
+        )
+          ? analysis.detectedChanges
+          : [],
+
+        estimatedHours: Number(
+          analysis.estimatedHours ?? 0
+        ),
+
+        hourlyRate: Number(
+          analysis.hourlyRate ?? 50
+        ),
+
+        overage: Number(
+          analysis.settlement ?? 0
+        ),
+      };
+
+      setResult(normalizedResult);
     } catch (err) {
       setError(
         err instanceof Error
@@ -288,21 +339,29 @@ export default function PRIntakePage() {
               </p>
 
               <div className="mt-3 space-y-2">
-                {result.detectedChanges.map(
-                  (change, index) => (
-                    <div
-                      key={index}
-                      className="flex gap-3 rounded-xl border border-slate-800 bg-slate-950 p-4"
-                    >
-                      <span className="text-cyan-400">
-                        +
-                      </span>
+                {result.detectedChanges.length > 0 ? (
+                  result.detectedChanges.map(
+                    (change, index) => (
+                      <div
+                        key={`${change}-${index}`}
+                        className="flex gap-3 rounded-xl border border-slate-800 bg-slate-950 p-4"
+                      >
+                        <span className="text-cyan-400">
+                          +
+                        </span>
 
-                      <p className="text-sm text-slate-300">
-                        {change}
-                      </p>
-                    </div>
+                        <p className="text-sm text-slate-300">
+                          {change}
+                        </p>
+                      </div>
+                    )
                   )
+                ) : (
+                  <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+                    <p className="text-sm text-slate-500">
+                      No specific scope keywords were detected.
+                    </p>
+                  </div>
                 )}
               </div>
             </div>
@@ -324,6 +383,19 @@ export default function PRIntakePage() {
                 value={`$${result.overage} USDC`}
                 highlight
               />
+            </div>
+
+            {/* Recommendation */}
+            <div className="mt-6 rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-5">
+              <p className="text-xs uppercase tracking-wider text-cyan-400">
+                ScopeGuard Recommendation
+              </p>
+
+              <p className="mt-2 text-sm leading-6 text-slate-300">
+                {result.decision === "Out of Scope"
+                  ? `Additional work detected. Recommended settlement: $${result.overage} USDC.`
+                  : "The submitted changes appear to remain within the agreed scope. No additional settlement is recommended."}
+              </p>
             </div>
 
             {/* Continue */}
