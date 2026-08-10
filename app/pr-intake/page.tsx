@@ -295,7 +295,7 @@ export default function PRIntakePage() {
  Analyze a GitHub Pull Request
  </h1>
 
- <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
+ <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-700 dark:text-slate-300">
  Give ScopeGuard the pull request details
  and the agreed statement of work. The AI
  will determine whether the requested
@@ -311,7 +311,7 @@ export default function PRIntakePage() {
  <section className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 lg:col-span-2">
 
  <div className="mb-6">
- <p className="text-xs uppercase tracking-wider text-slate-500">
+ <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400">
  Scope Analysis
  </p>
 
@@ -342,7 +342,7 @@ export default function PRIntakePage() {
  setPrTitle(event.target.value)
  }
  placeholder="Add PDF Export"
- className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-50 dark:bg-slate-950 px-4 py-3 text-sm outline-none transition placeholder:text-slate-600 focus:border-cyan-400"
+ className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-50 dark:bg-slate-950 px-4 py-3 text-sm outline-none transition placeholder:text-slate-700 dark:text-slate-300 focus:border-cyan-400"
  required
  />
  </div>
@@ -364,11 +364,11 @@ export default function PRIntakePage() {
  }
  rows={6}
  placeholder="Describe the changes introduced by the pull request..."
- className="mt-2 w-full resize-none rounded-xl border border-slate-700 bg-slate-50 dark:bg-slate-950 px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-slate-600 focus:border-cyan-400"
+ className="mt-2 w-full resize-none rounded-xl border border-slate-700 bg-slate-50 dark:bg-slate-950 px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-slate-700 dark:text-slate-300 focus:border-cyan-400"
  required
  />
 
- <p className="mt-2 text-xs text-slate-600">
+ <p className="mt-2 text-xs text-slate-700 dark:text-slate-300">
  Describe the new functionality,
  files, features, or changes introduced
  by the PR.
@@ -421,7 +421,7 @@ export default function PRIntakePage() {
  SOW PDF loaded
  </p>
 
- <p className="text-xs text-slate-500">
+ <p className="text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
  {sowFilename}
  </p>
  </div>
@@ -437,11 +437,11 @@ export default function PRIntakePage() {
  }
  rows={8}
  placeholder="Upload a PDF or describe what the freelancer agreed to build..."
- className="mt-3 w-full resize-none rounded-xl border border-slate-700 bg-slate-50 dark:bg-slate-950 px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-slate-600 focus:border-cyan-400"
+ className="mt-3 w-full resize-none rounded-xl border border-slate-700 bg-slate-50 dark:bg-slate-950 px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-slate-700 dark:text-slate-300 focus:border-cyan-400"
  required
  />
 
- <p className="mt-2 text-xs text-slate-600">
+ <p className="mt-2 text-xs text-slate-700 dark:text-slate-300">
  Uploading a PDF automatically
  extracts its text into this field.
  You can review or edit the extracted
@@ -478,7 +478,7 @@ export default function PRIntakePage() {
  {/* HOW IT WORKS */}
  <aside className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
 
- <p className="text-xs uppercase tracking-wider text-slate-500">
+ <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400">
  How it works
  </p>
 
@@ -517,7 +517,7 @@ export default function PRIntakePage() {
  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 
  <div>
- <p className="text-xs uppercase tracking-wider text-slate-500">
+ <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400">
  ScopeGuard Decision
  </p>
 
@@ -539,7 +539,7 @@ export default function PRIntakePage() {
 
  {/* AI SUMMARY */}
  <div className="mt-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-5">
- <p className="text-xs uppercase tracking-wider text-slate-600">
+ <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300">
  AI Summary
  </p>
 
@@ -550,7 +550,7 @@ export default function PRIntakePage() {
 
  {/* DETECTED CHANGES */}
  <div className="mt-6">
- <p className="text-xs uppercase tracking-wider text-slate-500">
+ <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400">
  Detected Changes
  </p>
 
@@ -574,7 +574,7 @@ export default function PRIntakePage() {
  )
  ) : (
  <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
- <p className="text-sm text-slate-500">
+ <p className="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-400">
  No specific scope keywords were
  detected.
  </p>
@@ -627,7 +627,7 @@ export default function PRIntakePage() {
  Audit saved successfully.
  </p>
 
- <p className="mt-1 text-xs text-slate-500">
+ <p className="mt-1 text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
  The Audit Dashboard will use this SOW,
  PR and AI decision.
  </p>
@@ -669,7 +669,7 @@ function Step({
  {title}
  </h3>
 
- <p className="mt-1 text-xs leading-5 text-slate-500">
+ <p className="mt-1 text-xs leading-5 text-slate-700 dark:text-slate-300 dark:text-slate-400">
  {description}
  </p>
  </div>
@@ -690,7 +690,7 @@ function ResultMetric({
  return (
  <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
 
- <p className="text-xs text-slate-600">
+ <p className="text-xs text-slate-700 dark:text-slate-300">
  {label}
  </p>
 

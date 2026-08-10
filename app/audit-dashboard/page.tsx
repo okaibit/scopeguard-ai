@@ -355,13 +355,13 @@ export default function AuditDashboard() {
               <h1 className="mt-2 text-3xl font-bold tracking-tight">
                 Audit Dashboard
               </h1>
-              <p className="mt-2 max-w-2xl text-sm text-slate-600 dark:text-slate-400">
+              <p className="mt-2 max-w-2xl text-sm text-slate-700 dark:text-slate-300">
                 Monitor AI scope decisions, overage settlements,
                 KeeperHub execution, and on-chain verification.
               </p>
             </div>
             <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-4 py-3">
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
                 System status
               </p>
               <p className="mt-1 flex items-center gap-2 text-sm font-semibold text-emerald-400">
@@ -396,7 +396,7 @@ export default function AuditDashboard() {
         <section className="grid gap-6 lg:grid-cols-3">
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
             <div className="mb-5">
-              <p className="text-xs uppercase tracking-wider text-slate-500">
+              <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400">
                 Audit Queue
               </p>
               <h2 className="mt-1 text-lg font-semibold">
@@ -425,7 +425,7 @@ export default function AuditDashboard() {
                     }`}
                   >
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-xs font-medium text-slate-500">
+                      <span className="text-xs font-medium text-slate-700 dark:text-slate-300 dark:text-slate-400">
                         {audit.id}
                       </span>
                       <StatusBadge status={audit.status} />
@@ -433,7 +433,7 @@ export default function AuditDashboard() {
                     <h3 className="mt-3 font-semibold">
                       {audit.pr} — {audit.title}
                     </h3>
-                    <p className="mt-1 text-xs text-slate-500">
+                    <p className="mt-1 text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
                       {audit.developer}
                     </p>
                   </button>
@@ -444,7 +444,7 @@ export default function AuditDashboard() {
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 lg:col-span-2">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-slate-700 dark:text-slate-300 dark:text-slate-400">
                   {selectedAudit.id} · GitHub Pull Request
                 </p>
                 <h2 className="mt-1 text-2xl font-bold">
@@ -494,32 +494,32 @@ export default function AuditDashboard() {
             <div className="mt-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-5">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-slate-500">
+                  <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400">
                     Settlement
                   </p>
                   <p className="mt-1 text-lg font-semibold">
                     {recommendedSettlement} recommended
                   </p>
-                  <p className="mt-1 text-sm text-slate-500">
+                  <p className="mt-1 text-sm text-slate-700 dark:text-slate-300 dark:text-slate-400">
                     Calculated from {selectedAudit.estimate} of
                     additional work at a $1 USDC/hour demo rate.
                   </p>
                 </div>
                 <div className="rounded-xl border border-cyan-400/20 bg-cyan-400/5 px-5 py-4">
-                  <p className="text-xs uppercase tracking-wider text-slate-500">
+                  <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400">
                     Demo execution
                   </p>
                   <p className="mt-1 text-xl font-bold text-cyan-300">
                     {TEST_SETTLEMENT_AMOUNT} USDC
                   </p>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
                     Base Sepolia testnet
                   </p>
                 </div>
               </div>
             </div>
             <div className="mt-6">
-              <p className="text-xs uppercase tracking-wider text-slate-500">
+              <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400">
                 Execution Pipeline
               </p>
               <div className="mt-3 grid gap-3 md:grid-cols-4">
@@ -594,10 +594,10 @@ export default function AuditDashboard() {
               </button>
             </div>
             <div className="mt-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
-              <p className="text-xs uppercase tracking-wider text-slate-600">
+              <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300">
                 System Event
               </p>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+              <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">
                 {message}
               </p>
             </div>
@@ -607,13 +607,13 @@ export default function AuditDashboard() {
         <section className="mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="w-full">
-              <p className="text-xs uppercase tracking-wider text-slate-500">
+              <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400">
                 On-chain verification
               </p>
               <h2 className="mt-1 text-lg font-semibold">
                 Settlement proof
               </h2>
-              <p className="mt-2 max-w-2xl text-sm text-slate-500">
+              <p className="mt-2 max-w-2xl text-sm text-slate-700 dark:text-slate-300 dark:text-slate-400">
                 KeeperHub execution must succeed before ScopeGuard
                 marks the settlement as verified on Base Sepolia.
               </p>
@@ -629,7 +629,7 @@ export default function AuditDashboard() {
                   </div>
                   {transactionHash && (
                     <div className="mt-4">
-                      <p className="text-xs uppercase tracking-wider text-slate-600">
+                      <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300">
                         Transaction hash
                       </p>
                       <p className="mt-2 break-all font-mono text-xs text-cyan-400">
@@ -654,10 +654,10 @@ export default function AuditDashboard() {
               )}
               {!isVerified && (
                 <div className="mt-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
-                  <p className="text-xs uppercase tracking-wider text-slate-600">
+                  <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300">
                     Verification state
                   </p>
-                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                  <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">
                     {selectedAudit.status === "Settled"
                       ? "Settlement completed. Waiting for transaction proof."
                       : selectedAudit.status === "Approved"
@@ -677,7 +677,7 @@ export default function AuditDashboard() {
                   : "border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950"
               }`}
             >
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
                 Transaction status
               </p>
               <p
@@ -687,7 +687,7 @@ export default function AuditDashboard() {
                     : selectedAudit.status ===
                       "Approved"
                     ? "text-cyan-400"
-                    : "text-slate-600 dark:text-slate-400"
+                    : "text-slate-700 dark:text-slate-300"
                 }`}
               >
                 {isVerified
@@ -718,13 +718,13 @@ function Metric({
 }) {
   return (
     <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
-      <p className="text-xs uppercase tracking-wider text-slate-500">
+      <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400">
         {label}
       </p>
       <p className="mt-2 text-2xl font-bold">
         {value}
       </p>
-      <p className="mt-1 text-xs text-slate-600">
+      <p className="mt-1 text-xs text-slate-700 dark:text-slate-300">
         {detail}
       </p>
     </div>
@@ -776,7 +776,7 @@ function InfoCard({
         className={`text-xs uppercase tracking-wider ${
           danger
             ? "text-red-400"
-            : "text-slate-500"
+            : "text-slate-700 dark:text-slate-300 dark:text-slate-400"
         }`}
       >
         {label}
@@ -796,7 +796,7 @@ function SmallStat({
 }) {
   return (
     <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3">
-      <p className="text-xs text-slate-600">
+      <p className="text-xs text-slate-700 dark:text-slate-300">
         {label}
       </p>
       <p className="mt-1 text-sm font-semibold text-slate-200">
@@ -827,7 +827,7 @@ function Pipeline({
       }`}
     >
       <div className="flex items-center justify-between">
-        <span className="text-xs font-bold text-slate-500">
+        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 dark:text-slate-400">
           {number}
         </span>
         {complete && (
@@ -844,7 +844,7 @@ function Pipeline({
       <p className="mt-3 text-sm font-semibold">
         {title}
       </p>
-      <p className="mt-1 text-xs text-slate-600">
+      <p className="mt-1 text-xs text-slate-700 dark:text-slate-300">
         {complete
           ? "Complete"
           : active

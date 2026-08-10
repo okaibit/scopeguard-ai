@@ -108,7 +108,7 @@ execute: true,
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
             Autonomous Scope Protection
           </h1>
-          <p className="mt-4 max-w-3xl text-slate-600 dark:text-slate-400">
+          <p className="mt-4 max-w-3xl text-slate-700 dark:text-slate-300">
             ScopeGuard analyzes software changes against an agreed
             statement of work, detects out-of-scope work, calculates
             the overage, and prepares an onchain settlement.
@@ -121,7 +121,7 @@ execute: true,
               <p className="text-xs font-semibold uppercase tracking-wider text-cyan-400">
                 AI Scope Analysis
               </p>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+              <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">
                 Compare the pull request against the original agreement.
               </p>
             </div>
@@ -142,7 +142,7 @@ execute: true,
                 <span className="text-sm text-slate-700 dark:text-slate-300">
                   {status}
                 </span>
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
                   {analysisStep + 1}/{analysisSteps.length}
                 </span>
               </div>
@@ -169,7 +169,7 @@ execute: true,
                 <p className="font-semibold text-emerald-400">
                   AI analysis complete
                 </p>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-slate-700 dark:text-slate-300">
                   Scope deviation detected and settlement calculated.
                 </p>
               </div>
@@ -182,7 +182,7 @@ execute: true,
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 lg:col-span-2">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-slate-700 dark:text-slate-300">
                   GitHub Pull Request
                 </p>
                 <h2 className="mt-1 text-xl font-semibold">
@@ -196,7 +196,7 @@ execute: true,
             <div className="space-y-4">
               {/* Original SOW */}
               <div className="rounded-xl bg-slate-50 dark:bg-slate-950 p-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-300 dark:text-slate-400">
                   Original SOW
                 </p>
                 <p className="mt-2 text-slate-700 dark:text-slate-300">
@@ -267,7 +267,7 @@ execute: true,
           {/* AI Decision */}
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-sm text-slate-700 dark:text-slate-300">
                 AI Decision
               </p>
               <span className="rounded-full bg-cyan-400/10 px-2.5 py-1 text-xs text-cyan-400">
@@ -277,14 +277,14 @@ execute: true,
             <h2 className="mt-3 text-2xl font-semibold">
               Settlement required
             </h2>
-            <p className="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-400">
+            <p className="mt-4 text-sm leading-6 text-slate-700 dark:text-slate-300">
               ScopeGuard determined that the PDF export feature
               was not included in the original agreement.
             </p>
             {/* Scope Score */}
             <div className="my-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="text-sm text-slate-700 dark:text-slate-300">
                   Out-of-scope score
                 </span>
                 <span className="text-lg font-bold text-red-400">
@@ -301,7 +301,7 @@ execute: true,
             {/* Settlement Details */}
             <div className="my-6 rounded-xl bg-slate-50 dark:bg-slate-950 p-4">
               <div className="flex justify-between gap-4">
-                <span className="text-slate-600 dark:text-slate-400">
+                <span className="text-slate-700 dark:text-slate-300">
                   Freelancer
                 </span>
                 <span className="font-medium">
@@ -309,7 +309,7 @@ execute: true,
                 </span>
               </div>
               <div className="mt-4 flex justify-between gap-4">
-                <span className="text-slate-600 dark:text-slate-400">
+                <span className="text-slate-700 dark:text-slate-300">
                   Settlement
                 </span>
                 <span className="font-semibold text-cyan-400">
@@ -335,7 +335,7 @@ execute: true,
             </button>
             {/* Status */}
             <div className="mt-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-3 py-3">
-              <p className="text-center text-xs text-slate-500">
+              <p className="text-center text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
                 {status}
               </p>
             </div>
@@ -357,7 +357,7 @@ execute: true,
         {/* Execution Pipeline */}
         <section className="mt-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
           <div className="mb-6">
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-slate-700 dark:text-slate-300">
               Execution Pipeline
             </p>
             <h2 className="mt-1 text-xl font-semibold">
@@ -392,7 +392,7 @@ execute: true,
           </div>
         </section>
         {/* Footer */}
-        <footer className="mt-8 text-center text-xs text-slate-600">
+        <footer className="mt-8 text-center text-xs text-slate-700 dark:text-slate-300">
           ScopeGuard AI · Autonomous scope enforcement for software work
         </footer>
       </div>
@@ -408,7 +408,7 @@ function Metric({
 }) {
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
         {label}
       </p>
       <p className="mt-1 text-lg font-semibold">
@@ -433,7 +433,7 @@ function Finding({
         <p className="text-sm font-medium text-slate-200">
           {title}
         </p>
-        <p className="mt-1 text-xs leading-5 text-slate-500">
+        <p className="mt-1 text-xs leading-5 text-slate-700 dark:text-slate-300 dark:text-slate-400">
           {description}
         </p>
       </div>
@@ -457,7 +457,7 @@ function PipelineStep({
         className={`mb-3 flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
           active
             ? "bg-cyan-400 text-slate-950"
-            : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+            : "bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
         }`}
       >
         {number}
@@ -465,7 +465,7 @@ function PipelineStep({
       <h3 className="font-semibold">
         {title}
       </h3>
-      <p className="mt-2 text-sm leading-5 text-slate-500">
+      <p className="mt-2 text-sm leading-5 text-slate-700 dark:text-slate-300 dark:text-slate-400">
         {description}
       </p>
     </div>

@@ -39,7 +39,7 @@ export default function RootLayout({
                 <p className="text-sm font-bold tracking-wide">
                   ScopeGuard AI
                 </p>
-                <p className="hidden text-[10px] uppercase tracking-wider text-slate-500 sm:block">
+                <p className="hidden text-[10px] uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-slate-400 sm:block">
                   Autonomous scope enforcement
                 </p>
               </div>
