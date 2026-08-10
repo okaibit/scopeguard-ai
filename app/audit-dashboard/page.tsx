@@ -344,7 +344,7 @@ export default function AuditDashboard() {
   const isApproved =
     selectedAudit.status === "Approved";
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-7xl px-6 py-10">
         <header className="mb-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -355,7 +355,7 @@ export default function AuditDashboard() {
               <h1 className="mt-2 text-3xl font-bold tracking-tight">
                 Audit Dashboard
               </h1>
-              <p className="mt-2 max-w-2xl text-sm text-slate-400">
+              <p className="mt-2 max-w-2xl text-sm text-slate-600 dark:text-slate-400">
                 Monitor AI scope decisions, overage settlements,
                 KeeperHub execution, and on-chain verification.
               </p>
@@ -394,7 +394,7 @@ export default function AuditDashboard() {
           />
         </section>
         <section className="grid gap-6 lg:grid-cols-3">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
             <div className="mb-5">
               <p className="text-xs uppercase tracking-wider text-slate-500">
                 Audit Queue
@@ -421,7 +421,7 @@ export default function AuditDashboard() {
                     className={`w-full rounded-xl border p-4 text-left transition ${
                       selected
                         ? "border-cyan-400/40 bg-cyan-400/5"
-                        : "border-slate-800 bg-slate-950 hover:border-slate-700"
+                        : "border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 hover:border-slate-700"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-3">
@@ -441,7 +441,7 @@ export default function AuditDashboard() {
               })}
             </div>
           </div>
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 lg:col-span-2">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 lg:col-span-2">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <p className="text-sm text-slate-500">
@@ -470,7 +470,7 @@ export default function AuditDashboard() {
               <p className="text-xs uppercase tracking-wider text-cyan-400">
                 AI Reasoning
               </p>
-              <p className="mt-2 text-sm leading-6 text-slate-300">
+              <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">
                 ScopeGuard compared the requested work against
                 the original statement of work and identified
                 the detected feature as additional functionality.
@@ -491,7 +491,7 @@ export default function AuditDashboard() {
               </div>
             </div>
             {/* Settlement summary */}
-            <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950 p-5">
+            <div className="mt-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-5">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-wider text-slate-500">
@@ -586,25 +586,25 @@ export default function AuditDashboard() {
                     "Approved" ||
                   isExecuting
                 }
-                className="rounded-xl border border-slate-700 bg-slate-800 px-5 py-3 text-sm font-semibold transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-xl border border-slate-700 bg-slate-200 dark:bg-slate-800 px-5 py-3 text-sm font-semibold transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {isExecuting
                   ? "Executing KeeperHub..."
                   : `Execute ${TEST_SETTLEMENT_AMOUNT} USDC Demo`}
               </button>
             </div>
-            <div className="mt-5 rounded-xl border border-slate-800 bg-slate-950 p-4">
+            <div className="mt-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
               <p className="text-xs uppercase tracking-wider text-slate-600">
                 System Event
               </p>
-              <p className="mt-2 text-sm text-slate-400">
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                 {message}
               </p>
             </div>
           </div>
         </section>
         {/* On-chain verification */}
-        <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+        <section className="mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="w-full">
               <p className="text-xs uppercase tracking-wider text-slate-500">
@@ -653,11 +653,11 @@ export default function AuditDashboard() {
                 </div>
               )}
               {!isVerified && (
-                <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950 p-4">
+                <div className="mt-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
                   <p className="text-xs uppercase tracking-wider text-slate-600">
                     Verification state
                   </p>
-                  <p className="mt-2 text-sm text-slate-400">
+                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                     {selectedAudit.status === "Settled"
                       ? "Settlement completed. Waiting for transaction proof."
                       : selectedAudit.status === "Approved"
@@ -674,7 +674,7 @@ export default function AuditDashboard() {
                   : selectedAudit.status ===
                     "Approved"
                   ? "border-cyan-400/30 bg-cyan-400/5"
-                  : "border-slate-800 bg-slate-950"
+                  : "border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950"
               }`}
             >
               <p className="text-xs text-slate-500">
@@ -687,7 +687,7 @@ export default function AuditDashboard() {
                     : selectedAudit.status ===
                       "Approved"
                     ? "text-cyan-400"
-                    : "text-slate-400"
+                    : "text-slate-600 dark:text-slate-400"
                 }`}
               >
                 {isVerified
@@ -717,7 +717,7 @@ function Metric({
   detail: string;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
       <p className="text-xs uppercase tracking-wider text-slate-500">
         {label}
       </p>
@@ -769,7 +769,7 @@ function InfoCard({
       className={`rounded-xl border p-4 ${
         danger
           ? "border-red-500/20 bg-red-500/5"
-          : "border-slate-800 bg-slate-950"
+          : "border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950"
       }`}
     >
       <p
@@ -781,7 +781,7 @@ function InfoCard({
       >
         {label}
       </p>
-      <p className="mt-2 text-sm leading-6 text-slate-300">
+      <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">
         {text}
       </p>
     </div>
@@ -795,7 +795,7 @@ function SmallStat({
   value: string;
 }) {
   return (
-    <div className="rounded-lg border border-slate-800 bg-slate-950 p-3">
+    <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3">
       <p className="text-xs text-slate-600">
         {label}
       </p>
@@ -823,7 +823,7 @@ function Pipeline({
           ? "border-emerald-500/20 bg-emerald-500/5"
           : active
           ? "border-cyan-400/30 bg-cyan-400/5"
-          : "border-slate-800 bg-slate-950"
+          : "border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950"
       }`}
     >
       <div className="flex items-center justify-between">

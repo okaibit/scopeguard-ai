@@ -274,7 +274,7 @@ export default function PRIntakePage() {
  }
 
  return (
- <main className="min-h-screen bg-slate-950 text-white">
+ <main className="min-h-screen bg-background text-foreground">
  <div className="mx-auto max-w-6xl px-6 py-10">
 
  {/* Header */}
@@ -295,7 +295,7 @@ export default function PRIntakePage() {
  Analyze a GitHub Pull Request
  </h1>
 
- <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+ <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
  Give ScopeGuard the pull request details
  and the agreed statement of work. The AI
  will determine whether the requested
@@ -308,7 +308,7 @@ export default function PRIntakePage() {
  <div className="grid gap-6 lg:grid-cols-3">
 
  {/* INPUT */}
- <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6 lg:col-span-2">
+ <section className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 lg:col-span-2">
 
  <div className="mb-6">
  <p className="text-xs uppercase tracking-wider text-slate-500">
@@ -329,7 +329,7 @@ export default function PRIntakePage() {
  <div>
  <label
  htmlFor="prTitle"
- className="text-sm font-medium text-slate-300"
+ className="text-sm font-medium text-slate-700 dark:text-slate-300"
  >
  Pull Request Title
  </label>
@@ -342,7 +342,7 @@ export default function PRIntakePage() {
  setPrTitle(event.target.value)
  }
  placeholder="Add PDF Export"
- className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm outline-none transition placeholder:text-slate-600 focus:border-cyan-400"
+ className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-50 dark:bg-slate-950 px-4 py-3 text-sm outline-none transition placeholder:text-slate-600 focus:border-cyan-400"
  required
  />
  </div>
@@ -351,7 +351,7 @@ export default function PRIntakePage() {
  <div>
  <label
  htmlFor="prChanges"
- className="text-sm font-medium text-slate-300"
+ className="text-sm font-medium text-slate-700 dark:text-slate-300"
  >
  Pull Request Changes
  </label>
@@ -364,7 +364,7 @@ export default function PRIntakePage() {
  }
  rows={6}
  placeholder="Describe the changes introduced by the pull request..."
- className="mt-2 w-full resize-none rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-slate-600 focus:border-cyan-400"
+ className="mt-2 w-full resize-none rounded-xl border border-slate-700 bg-slate-50 dark:bg-slate-950 px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-slate-600 focus:border-cyan-400"
  required
  />
 
@@ -381,7 +381,7 @@ export default function PRIntakePage() {
 
  <label
  htmlFor="sow"
- className="text-sm font-medium text-slate-300"
+ className="text-sm font-medium text-slate-700 dark:text-slate-300"
  >
  Original Statement of Work
  </label>
@@ -437,7 +437,7 @@ export default function PRIntakePage() {
  }
  rows={8}
  placeholder="Upload a PDF or describe what the freelancer agreed to build..."
- className="mt-3 w-full resize-none rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-slate-600 focus:border-cyan-400"
+ className="mt-3 w-full resize-none rounded-xl border border-slate-700 bg-slate-50 dark:bg-slate-950 px-4 py-3 text-sm leading-6 outline-none transition placeholder:text-slate-600 focus:border-cyan-400"
  required
  />
 
@@ -476,7 +476,7 @@ export default function PRIntakePage() {
  </section>
 
  {/* HOW IT WORKS */}
- <aside className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+ <aside className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
 
  <p className="text-xs uppercase tracking-wider text-slate-500">
  How it works
@@ -512,7 +512,7 @@ export default function PRIntakePage() {
 
  {/* RESULT */}
  {result && (
- <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+ <section className="mt-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
 
  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 
@@ -538,12 +538,12 @@ export default function PRIntakePage() {
  </div>
 
  {/* AI SUMMARY */}
- <div className="mt-6 rounded-xl border border-slate-800 bg-slate-950 p-5">
+ <div className="mt-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-5">
  <p className="text-xs uppercase tracking-wider text-slate-600">
  AI Summary
  </p>
 
- <p className="mt-2 text-sm leading-6 text-slate-300">
+ <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">
  {result.summary}
  </p>
  </div>
@@ -560,20 +560,20 @@ export default function PRIntakePage() {
  (change, index) => (
  <div
  key={`${change}-${index}`}
- className="flex gap-3 rounded-xl border border-slate-800 bg-slate-950 p-4"
+ className="flex gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4"
  >
  <span className="text-cyan-400">
  +
  </span>
 
- <p className="text-sm text-slate-300">
+ <p className="text-sm text-slate-700 dark:text-slate-300">
  {change}
  </p>
  </div>
  )
  )
  ) : (
- <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+ <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
  <p className="text-sm text-slate-500">
  No specific scope keywords were
  detected.
@@ -611,7 +611,7 @@ export default function PRIntakePage() {
  ScopeGuard Recommendation
  </p>
 
- <p className="mt-2 text-sm leading-6 text-slate-300">
+ <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">
  {result.decision === "Out of Scope"
  ? `Additional work detected. Recommended settlement: $${result.overage} USDC.`
  : "The submitted changes appear to remain within the agreed scope. No additional settlement is recommended."}
@@ -623,7 +623,7 @@ export default function PRIntakePage() {
  <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
  <div>
- <p className="text-sm text-slate-300">
+ <p className="text-sm text-slate-700 dark:text-slate-300">
  Audit saved successfully.
  </p>
 
@@ -660,7 +660,7 @@ function Step({
  return (
  <div className="flex gap-3">
 
- <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-800 text-xs font-bold text-cyan-400">
+ <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-800 text-xs font-bold text-cyan-400">
  {number}
  </div>
 
@@ -688,7 +688,7 @@ function ResultMetric({
  highlight?: boolean;
 }) {
  return (
- <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+ <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
 
  <p className="text-xs text-slate-600">
  {label}
@@ -698,7 +698,7 @@ function ResultMetric({
  className={`mt-2 text-lg font-bold ${
  highlight
  ? "text-cyan-400"
- : "text-white"
+ : "text-slate-950 dark:text-white"
  }`}
  >
  {value}
