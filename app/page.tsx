@@ -128,16 +128,16 @@ execute: true,
             <button
               onClick={runAnalysis}
               disabled={isAnalyzing || isExecuting}
-              className="rounded-xl bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-full bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isAnalyzing
-                ? "AI Analyzing..."
-                : "Run AI Analysis"}
+                ? "> AI Analyzing..."
+                : "> Run AI Analysis"}
             </button>
           </div>
           {/* Analysis progress */}
           {isAnalyzing && (
-            <div className="mt-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
+            <div className="mt-5 rounded-xl border border-[#e3ddc9] dark:border-slate-800 bg-[#ece6d5] dark:bg-slate-950 p-4">
               <div className="mb-3 flex items-center justify-between">
                 <span className="text-sm text-slate-700 dark:text-slate-300">
                   {status}
@@ -179,7 +179,7 @@ execute: true,
         {/* Main Grid */}
         <section className="grid gap-6 lg:grid-cols-3">
           {/* PR Analysis */}
-          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 lg:col-span-2">
+          <div className="rounded-2xl border border-[#e3ddc9] dark:border-slate-800 bg-[#fbf9f2] dark:bg-slate-900 p-6 lg:col-span-2">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm text-slate-700 dark:text-slate-300">
@@ -195,7 +195,7 @@ execute: true,
             </div>
             <div className="space-y-4">
               {/* Original SOW */}
-              <div className="rounded-xl bg-slate-50 dark:bg-slate-950 p-5">
+              <div className="rounded-xl bg-[#ece6d5] dark:bg-slate-950 p-5">
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-300 dark:text-slate-400">
                   Original SOW
                 </p>
@@ -265,7 +265,7 @@ execute: true,
             </div>
           </div>
           {/* AI Decision */}
-          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
+          <div className="rounded-2xl border border-[#e3ddc9] dark:border-slate-800 bg-[#fbf9f2] dark:bg-slate-900 p-6">
             <div className="flex items-center justify-between">
               <p className="text-sm text-slate-700 dark:text-slate-300">
                 AI Decision
@@ -282,7 +282,7 @@ execute: true,
               was not included in the original agreement.
             </p>
             {/* Scope Score */}
-            <div className="my-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
+            <div className="my-6 rounded-xl border border-[#e3ddc9] dark:border-slate-800 bg-[#ece6d5] dark:bg-slate-950 p-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-slate-700 dark:text-slate-300">
                   Out-of-scope score
@@ -299,7 +299,7 @@ execute: true,
               </div>
             </div>
             {/* Settlement Details */}
-            <div className="my-6 rounded-xl bg-slate-50 dark:bg-slate-950 p-4">
+            <div className="my-6 rounded-xl bg-[#ece6d5] dark:bg-slate-950 p-4">
               <div className="flex justify-between gap-4">
                 <span className="text-slate-700 dark:text-slate-300">
                   Freelancer
@@ -325,7 +325,7 @@ execute: true,
                 isAnalyzing ||
                 analysisState !== "complete"
               }
-              className="w-full rounded-xl bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-40"
+              className="w-full rounded-full bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {isExecuting
                 ? "Executing..."
@@ -334,7 +334,7 @@ execute: true,
                 : "Run AI Analysis First"}
             </button>
             {/* Status */}
-            <div className="mt-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-3 py-3">
+            <div className="mt-4 rounded-lg border border-[#e3ddc9] dark:border-slate-800 bg-[#ece6d5] dark:bg-slate-950 px-3 py-3">
               <p className="text-center text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
                 {status}
               </p>
@@ -355,7 +355,7 @@ execute: true,
           </div>
         </section>
         {/* Execution Pipeline */}
-        <section className="mt-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">
+        <section className="mt-8 rounded-2xl border border-[#e3ddc9] dark:border-slate-800 bg-[#fbf9f2] dark:bg-slate-900 p-6">
           <div className="mb-6">
             <p className="text-sm text-slate-700 dark:text-slate-300">
               Execution Pipeline
@@ -407,7 +407,7 @@ function Metric({
   value: string;
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+    <div className="rounded-xl border border-[#e3ddc9] dark:border-slate-800 p-4">
       <p className="text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
         {label}
       </p>
@@ -452,7 +452,7 @@ function PipelineStep({
   active?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-4">
+    <div className="rounded-xl border border-[#e3ddc9] dark:border-slate-800 bg-[#ece6d5] dark:bg-slate-950 p-4">
       <div
         className={`mb-3 flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
           active
