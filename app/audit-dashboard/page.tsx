@@ -26,7 +26,7 @@ const initialAudits: Audit[] = [
     change:
       "PDF export functionality and supporting export controls.",
     estimate: "3 hours",
-    overage: "$150 USDC",
+    overage: "$3 USDC",
   },
   {
     id: "SG-041",
@@ -37,7 +37,7 @@ const initialAudits: Audit[] = [
     change:
       "Dashboard layout and responsive styling improvements.",
     estimate: "2 hours",
-    overage: "$100 USDC",
+    overage: "$3 USDC",
   },
   {
     id: "SG-040",
@@ -48,10 +48,10 @@ const initialAudits: Audit[] = [
     change:
       "Fixed authentication redirect handling.",
     estimate: "1 hour",
-    overage: "$50 USDC",
+    overage: "$3 USDC",
   },
 ];
-const TEST_SETTLEMENT_AMOUNT = "5";
+const TEST_SETTLEMENT_AMOUNT = "3";
 const TEST_RECIPIENT =
   "0x0D392ba82e6c86192cB92fd568BDCf33e9d2295E";
 const BASE_SEPOLIA_NETWORK = "84532";

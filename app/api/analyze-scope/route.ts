@@ -811,11 +811,17 @@ export async function POST(
      * -------------------------------------------------------
      */
 
-    const settlement =
+    const calculatedSettlement =
       Math.round(
         estimatedHours *
           safeHourlyRate
       );
+
+    // Demo/testnet settlement cap: never recommend more than 3 USDC.
+    const settlement = Math.min(
+      calculatedSettlement,
+      3
+    );
 
     /*
      * -------------------------------------------------------
