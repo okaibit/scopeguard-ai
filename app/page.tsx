@@ -231,7 +231,7 @@ export default function Home() {
                 />
                 <Metric
                   label="Overage"
-                  value="$150 USDC"
+                  value="$3 USDC"
                 />
               </div>
             </div>
@@ -285,7 +285,7 @@ export default function Home() {
                   Settlement
                 </span>
                 <span className="font-semibold text-cyan-400">
-                  150 USDC
+                  3 USDC
                 </span>
               </div>
             </div>
