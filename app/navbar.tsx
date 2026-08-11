@@ -19,7 +19,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-background/80 backdrop-blur dark:border-slate-800">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
         {/* Brand Logo */}
-        <Link href="/" className="hidden md:flex items-center gap-2.5 shrink-0">
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-400 text-sm font-black text-slate-950">
             S
           </span>
@@ -34,7 +34,7 @@ export default function Navbar() {
         </Link>
 
         {/* Dynamic Navigation Controls */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="hidden md:flex items-center gap-2">
           <Link href="/pr-intake" className={getLinkStyle("/pr-intake")}>
             Start Audit
           </Link>
