@@ -17,34 +17,36 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-background/80 backdrop-blur dark:border-slate-800">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
-        {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-400 text-sm font-black text-slate-950">
-            S
-          </span>
-          <div>
-            <p className="text-sm font-bold tracking-wide whitespace-nowrap">
-              ScopeGuard AI
-            </p>
-            <p className="hidden text-[10px] uppercase tracking-wider text-slate-700 dark:text-slate-400 sm:block">
-              Autonomous scope enforcement
-            </p>
-          </div>
-        </Link>
+      <div className="mx-auto flex max-w-7xl flex-col sm:flex-row items-center justify-between px-4 py-2.5 sm:py-4 gap-2 sm:gap-0">
+        
+        {/* Top Row on Mobile: Logo + Theme Toggle */}
+        <div className="flex w-full sm:w-auto items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-400 text-xs font-black text-slate-950">
+              S
+            </span>
+            <span className="text-sm font-bold tracking-wide">ScopeGuard AI</span>
+          </Link>
 
-        {/* Dynamic Navigation Controls */}
-        <div className="hidden md:flex items-center gap-2">
+          {/* Theme toggle visible on mobile top bar */}
+          <div className="sm:hidden">
+            <ThemeToggle />
+          </div>
+        </div>
+
+        {/* Navigation Links & Desktop Theme Toggle */}
+        <div className="flex w-full sm:w-auto items-center justify-center sm:justify-end gap-2 text-xs sm:text-sm">
           <Link href="/pr-intake" className={getLinkStyle("/pr-intake")}>
             Start Audit
           </Link>
-
           <Link href="/audit-dashboard" className={getLinkStyle("/audit-dashboard")}>
             Audit Dashboard
           </Link>
-
-          <ThemeToggle />
+          <div className="hidden sm:block">
+            <ThemeToggle />
+          </div>
         </div>
+
       </div>
     </nav>
   );
