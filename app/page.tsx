@@ -20,6 +20,8 @@ export default function Home() {
   const [analysisStep, setAnalysisStep] = useState(0);
   const [status, setStatus] = useState("Awaiting AI analysis");
   const [executionMessage, setExecutionMessage] = useState("");
+  const [transactionHash, setTransactionHash] = useState("");
+  const [transactionLink, setTransactionLink] = useState("");
   const runAnalysis = async () => {
     setAnalysisState("analyzing");
     setAnalysisStep(0);
@@ -36,6 +38,8 @@ export default function Home() {
   const handleExecute = async () => {
     setAnalysisState("executing");
     setExecutionMessage("");
+    setTransactionHash("");
+    setTransactionLink("");
     setStatus("Connecting to KeeperHub...");
     try {
       const response = await fetch("/api/keeperhub/execute", {
@@ -59,6 +63,18 @@ execute: true,
       setAnalysisState("success");
       setStatus("KeeperHub execution completed");
 
+      const resolvedHash =
+        data.transactionHash ||
+        data.keeperHub?.transactionHash ||
+        "";
+      const resolvedLink =
+        data.transactionLink ||
+        data.keeperHub?.transactionLink ||
+        "";
+
+      setTransactionHash(resolvedHash);
+      setTransactionLink(resolvedLink);
+
       window.localStorage.setItem(
         "scopeguard-settlement",
         JSON.stringify({
@@ -66,14 +82,8 @@ execute: true,
           status: "Settled",
           amount: data.settlement?.amount || "3",
           currency: data.settlement?.currency || "USDC",
-          transactionHash:
-            data.transactionHash ||
-            data.keeperHub?.transactionHash ||
-            "",
-          transactionLink:
-            data.transactionLink ||
-            data.keeperHub?.transactionLink ||
-            "",
+          transactionHash: resolvedHash,
+          transactionLink: resolvedLink,
         })
       );
 
@@ -217,7 +227,7 @@ execute: true,
                     + Out of scope
                   </span>
                 </div>
-                <p className="mt-2 text-slate-200">
+                <p className="mt-2 text-slate-700 dark:text-slate-200">
                   Added PDF export functionality and supporting
                   export controls.
                 </p>
@@ -350,6 +360,23 @@ execute: true,
                 <p className="text-center text-xs">
                   {executionMessage}
                 </p>
+                {analysisState === "success" && transactionHash && (
+                  <p className="mt-2 text-center text-xs text-slate-700 dark:text-slate-300">
+                    Tx: {transactionHash.slice(0, 10)}...{transactionHash.slice(-8)}
+                  </p>
+                )}
+                {analysisState === "success" && transactionLink && (
+                  <p className="mt-2 text-center">
+                    <a
+                      href={transactionLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs font-semibold text-cyan-400 underline underline-offset-2 hover:text-cyan-300"
+                    >
+                      View on BaseScan →
+                    </a>
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -430,7 +457,7 @@ function Finding({
         ✓
       </div>
       <div>
-        <p className="text-sm font-medium text-slate-200">
+        <p className="text-sm font-medium text-slate-900 dark:text-slate-200">
           {title}
         </p>
         <p className="mt-1 text-xs leading-5 text-slate-700 dark:text-slate-300 dark:text-slate-400">
