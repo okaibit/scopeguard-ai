@@ -12,7 +12,7 @@ export default function Navbar() {
     if (isActive) {
       return "rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1.5 text-xs font-bold text-cyan-800 dark:border-cyan-400/30 dark:bg-cyan-400/10 dark:text-cyan-400 transition sm:px-3.5 sm:py-2 sm:text-sm whitespace-nowrap";
     }
-    return "rounded-full px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-200/60 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white sm:px-3 sm:py-2 sm:text-sm whitespace-nowrap";
+    return "rounded-full border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 dark:border-slate-700 transition hover:bg-slate-200/60 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white sm:px-3 sm:py-2 sm:text-sm whitespace-nowrap";
   };
 
   return (
