@@ -55,6 +55,8 @@ export default function AuditDashboard() {
           hourlyRate: Number(savedAudit.hourlyRate ?? 1),
         };
 
+        // Intentional hydration from the browser localStorage store.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setAudits([dashboardAudit]);
         setSelectedAudit(dashboardAudit);
       } catch {
@@ -84,7 +86,9 @@ export default function AuditDashboard() {
           );
         }
       } catch {
-        window.localStorage.removeItem("scopeguard-settlement");
+        // Settlement proof must persist so the main ScopeGuard page
+    // can display the existing transaction without executing again.
+    // DO NOT remove "scopeguard-settlement".
       }
     }
   }, []);
@@ -151,6 +155,54 @@ export default function AuditDashboard() {
 
       setTransactionHash(possibleHash ? String(possibleHash) : "");
       setTransactionLink(possibleTransactionLink ? String(possibleTransactionLink) : "");
+
+      // Persist the EXISTING Audit Dashboard settlement proof so the
+      // main ScopeGuard Settlement Required card can display it.
+      // This does NOT execute another payment.
+      const settlementProof = {
+        auditId: selectedAudit.id,
+        status: "Settled",
+        amount: String(TEST_SETTLEMENT_AMOUNT).replace(/\\s*USDC\\s*$/i, ""),
+        currency: "USDC",
+        transactionHash: possibleHash ? String(possibleHash) : "",
+        transactionLink: possibleTransactionLink
+          ? String(possibleTransactionLink)
+          : "",
+      };
+
+      // Persist the settlement proof.
+      // This does NOT execute a payment.
+      window.localStorage.setItem(
+        "scopeguard-settlement",
+        JSON.stringify(settlementProof)
+      );
+
+      // Keep the audit record synchronized with the settlement.
+      const currentAuditRaw =
+        window.localStorage.getItem(STORAGE_KEY);
+
+      if (currentAuditRaw) {
+        try {
+          const currentAudit = JSON.parse(currentAuditRaw);
+
+          if (currentAudit.id === selectedAudit.id) {
+            window.localStorage.setItem(
+              STORAGE_KEY,
+              JSON.stringify({
+                ...currentAudit,
+                status: "Settled",
+                settlementAmount: settlementProof.amount,
+                settlementCurrency: settlementProof.currency,
+                transactionHash: settlementProof.transactionHash,
+                transactionLink: settlementProof.transactionLink,
+                settlementStatus: "Settled",
+              })
+            );
+          }
+        } catch {
+          console.warn("Could not synchronize the saved audit.");
+        }
+      }
 
       setAudits((current) =>
         current.map((audit) =>
@@ -293,20 +345,45 @@ export default function AuditDashboard() {
                 <div className="mt-6">
                   <p className="text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300">Execution Pipeline</p>
                   <div className="mt-3 grid gap-3 md:grid-cols-4">
-                    <Pipeline number="01" title="Detect" complete />
-                    <Pipeline number="02" title="Reason" complete />
-                    <Pipeline number="03" title="Execute" complete={selectedAudit.status === "Settled"} active={isApproved} />
-                    <Pipeline number="04" title="Verify" complete={isVerified} active={selectedAudit.status === "Settled" && !isVerified} />
-                  </div>
+                    <Pipeline
+                      number="01"
+                      title="Detect"
+                      complete={
+                        selectedAudit.status === "Analyzing" ||
+                        selectedAudit.status === "Out of Scope" ||
+                        selectedAudit.status === "Approved" ||
+                        selectedAudit.status === "Settled"
+                      }
+                      active={selectedAudit.status === "Detected"}
+                    />
+                    <Pipeline
+                      number="02"
+                      title="Reason"
+                      complete={
+                        selectedAudit.status === "Out of Scope" ||
+                        selectedAudit.status === "Approved" ||
+                        selectedAudit.status === "Settled"
+                      }
+                      active={selectedAudit.status === "Analyzing"}
+                    />
+                    <Pipeline
+                      number="03"
+                      title="Execute"
+                      complete={selectedAudit.status === "Settled"}
+                      active={selectedAudit.status === "Approved"}
+                    />
+                    <Pipeline
+                      number="04"
+                      title="Verify"
+                      complete={isVerified}
+                      active={
+                        selectedAudit.status === "Settled" &&
+                        !isVerified
+                      }
+                    />
+</div>
                 </div>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                  <button
-                    onClick={runAnalysis}
-                    disabled={isRunning || isExecuting}
-                    className="rounded-xl border border-cyan-400/30 bg-cyan-400/10 px-5 py-3 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/20 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    {isRunning ? "AI Analyzing..." : "Run AI Analysis"}
-                  </button>
                   <button
                     onClick={approveSettlement}
                     disabled={selectedAudit.status !== "Out of Scope" || isRunning || isExecuting}

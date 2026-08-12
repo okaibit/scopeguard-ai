@@ -36,7 +36,7 @@ export default function Navbar() {
 
         {/* Navigation Links & Desktop Theme Toggle */}
         <div className="flex w-full sm:w-auto items-center justify-center sm:justify-end gap-2 text-xs sm:text-sm">
-          <Link href="/pr-intake" className={getLinkStyle("/pr-intake")}>
+          <Link href="/scope-analyzer" className={getLinkStyle("/scope-analyzer")}>
             Start Audit
           </Link>
           <Link href="/audit-dashboard" className={getLinkStyle("/audit-dashboard")}>

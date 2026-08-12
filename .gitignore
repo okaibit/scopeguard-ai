@@ -33,3 +33,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .env.local
+# Local development backups
+*.before-*
+*.backup
+*.save
+*.save.*

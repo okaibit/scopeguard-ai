@@ -386,21 +386,12 @@ export async function POST(request: Request) {
       "successful",
       "confirmed",
       "executed",
-      "submitted",
-      "pending",
     ];
-
-    const hasTransactionProof =
-      Boolean(
-        transactionHash ||
-          transactionLink
-      );
 
     const executionSucceeded =
       successfulStatuses.includes(
         normalizedStatus
-      ) ||
-      hasTransactionProof;
+      );
 
     /*
      * -------------------------------------------------------
@@ -445,6 +436,36 @@ export async function POST(request: Request) {
      * SUCCESS
      * -------------------------------------------------------
      */
+
+    if (!transactionHash) {
+      return Response.json(
+        {
+          success: false,
+          mode: "execute",
+          message:
+            "KeeperHub confirmed execution, but no transaction hash was returned.",
+
+          error:
+            "Settlement cannot be marked as settled onchain without transaction proof.",
+
+          settlement: {
+            amount,
+            currency,
+            recipientAddress,
+            network,
+            tokenAddress,
+          },
+
+          keeperHub: result,
+
+          rawKeeperHubResult:
+            result,
+
+          onchainExecuted: false,
+        },
+        { status: 502 }
+      );
+    }
 
     return Response.json({
       success: true,
