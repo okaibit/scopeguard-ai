@@ -36,6 +36,28 @@ export default function Navbar() {
 
         {/* Navigation Links & Desktop Theme Toggle */}
         <div className="flex w-full sm:w-auto items-center justify-center sm:justify-end gap-2 text-xs sm:text-sm">
+          <Link
+            href="/"
+            aria-label="Main Dashboard"
+            title="Main Dashboard"
+            className={getLinkStyle("/")}
+          >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+            >
+              <path d="M3 10.5 12 3l9 7.5" />
+              <path d="M5 9.5V21h14V9.5" />
+              <path d="M9 21v-6h6v6" />
+            </svg>
+            <span className="sr-only">Main Dashboard</span>
+          </Link>
           <Link href="/scope-analyzer" className={getLinkStyle("/scope-analyzer")}>
             Start Audit
           </Link>
