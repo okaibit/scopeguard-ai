@@ -30,6 +30,22 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function () {
+              try {
+                var saved = localStorage.getItem("scopeguard-theme");
+                var isDark = saved !== "light";
+                document.documentElement.classList.toggle("dark", isDark);
+              } catch (e) {}
+            })();
+          `,
+        }}
+      />
+      </head>
+      
       <body className="min-h-full bg-background text-foreground flex flex-col">
         <Navbar />
         <div className="flex-1">{children}</div>

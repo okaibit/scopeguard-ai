@@ -9,6 +9,8 @@ export default function ThemeToggle() {
     const saved = window.localStorage.getItem("scopeguard-theme");
     const isDark = saved !== "light";
 
+    // Intentional hydration from the browser localStorage store.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDark(isDark);
     document.documentElement.classList.toggle("dark", isDark);
   }, []);

@@ -1,5 +1,30 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+type AuditRecord = {
+  id?: string;
+  pr?: string;
+  title?: string;
+  developer?: string;
+  status?: string;
+  change?: string;
+  estimate?: string;
+  overage?: string;
+  hourlyRate?: number;
+  settlementStatus?: string;
+  settlementAmount?: string;
+  settlementCurrency?: string;
+  sow?: string;
+  confidence?: number | string;
+  reasoning?: string;
+  recommendation?: string;
+  detectedChanges?: string[];
+  newScopeItems?: string[];
+  existingScopeItems?: string[];
+  estimatedHours?: number;
+  transactionHash?: string;
+  transactionLink?: string;
+};
+
 type AnalysisState =
   | "idle"
   | "analyzing"
@@ -18,68 +43,274 @@ export default function Home() {
   const [analysisState, setAnalysisState] =
     useState<AnalysisState>("idle");
   const [analysisStep, setAnalysisStep] = useState(0);
-  const [status, setStatus] = useState("AI analysis complete");
+  const [status, setStatus] =
+    useState("Waiting for scope analysis");
+
+  const [audit, setAudit] = useState<AuditRecord | null>(null);
   const [executionMessage, setExecutionMessage] = useState("");
   const [transactionHash, setTransactionHash] = useState("");
   const [transactionLink, setTransactionLink] = useState("");
 
- useEffect(() => {
-const storedAudit = window.localStorage.getItem("scopeguard-current-audit");
-const storedSettlement = window.localStorage.getItem("scopeguard-settlement");
+  const executionStarted = useRef(false);
 
-if (storedAudit) {
-try {
-const audit = JSON.parse(storedAudit);
+  useEffect(() => {
+    const storedAudit =
+      window.localStorage.getItem("scopeguard-current-audit");
 
-if (
-audit.status === "Out of Scope" ||
-audit.status === "Approved" ||
-audit.status === "Settled"
-) {
-setAnalysisState("complete");
-setStatus(
-audit.status === "Settled"
-? "Settlement completed"
-: audit.status === "Approved"
-? "Settlement approved"
-: "AI analysis complete"
-);
-}
-} catch {
-console.warn("Could not read the saved ScopeGuard audit.");
-}
-}
+    const storedSettlement =
+      window.localStorage.getItem("scopeguard-settlement");
 
-if (storedSettlement) {
-try {
-const settlement = JSON.parse(storedSettlement);
+    if (storedAudit) {
+      try {
+        const parsedAudit = JSON.parse(storedAudit);
 
-if (settlement.status === "Settled") {
-setTransactionHash(settlement.transactionHash || "");
-setTransactionLink(settlement.transactionLink || "");
-setAnalysisState("success");
-setStatus("Settlement completed");
-}
-} catch {
-console.warn("Could not read the saved ScopeGuard settlement.");
-}
-}
-}, []);
+        // Intentional hydration from the browser localStorage store.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setAudit(parsedAudit);
 
- const runAnalysis = async () => {
+        if (parsedAudit.status === "Settled") {
+          setAnalysisState("success");
+          setStatus("Settlement completed");
+        } else if (
+          parsedAudit.status === "Approved" ||
+          parsedAudit.status === "Out of Scope"
+        ) {
+          setAnalysisState("complete");
+          setStatus(
+            parsedAudit.status === "Approved"
+              ? "Settlement approved"
+              : "AI analysis complete"
+          );
+        }
+      } catch {
+        console.warn(
+          "Could not read the saved ScopeGuard audit."
+        );
+      }
+    }
+
+    if (storedSettlement) {
+      try {
+        const settlement = JSON.parse(storedSettlement);
+
+        if (settlement.status === "Settled") {
+          const hash = settlement.transactionHash || "";
+          const link =
+            settlement.transactionLink ||
+            (hash
+              ? `https://sepolia.basescan.org/tx/${hash}`
+              : "");
+
+          setTransactionHash(hash);
+          setTransactionLink(link);
+
+          if (hash) {
+            setAnalysisState("success");
+            setStatus("Settlement completed");
+            setExecutionMessage(
+              "Settlement already confirmed. No additional payment was sent."
+            );
+
+            // Keep the saved audit synchronized with the existing
+            // settlement proof. This does NOT execute a payment.
+            const currentAuditRaw =
+              window.localStorage.getItem("scopeguard-current-audit");
+
+            if (currentAuditRaw) {
+              try {
+                const currentAudit = JSON.parse(currentAuditRaw);
+
+                window.localStorage.setItem(
+                  "scopeguard-current-audit",
+                  JSON.stringify({
+                    ...currentAudit,
+                    status: "Settled",
+                    settlementStatus: "Settled",
+                    settlementAmount: settlement.amount || "3",
+                    settlementCurrency: settlement.currency || "USDC",
+                    transactionHash: hash,
+                    transactionLink: link,
+                  })
+                );
+
+                setAudit({
+                  ...currentAudit,
+                  status: "Settled",
+                  settlementStatus: "Settled",
+                  settlementAmount: settlement.amount || "3",
+                  settlementCurrency: settlement.currency || "USDC",
+                  transactionHash: hash,
+                  transactionLink: link,
+                });
+              } catch {
+                console.warn(
+                  "Could not synchronize the saved audit with settlement proof."
+                );
+              }
+            }
+          }
+        }
+      } catch {
+        console.warn(
+          "Could not read the saved ScopeGuard settlement."
+        );
+      }
+    }
+  }, []);
+
+  const handleAnalyze = async () => {
+    if (analysisState === "analyzing") {
+      return;
+    }
+
     setAnalysisState("analyzing");
     setAnalysisStep(0);
+    setExecutionMessage("");
     setStatus(analysisSteps[0]);
-    for (let i = 1; i < analysisSteps.length; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      setAnalysisStep(i);
-      setStatus(analysisSteps[i]);
+
+    try {
+      for (let i = 0; i < analysisSteps.length; i++) {
+        setAnalysisStep(i);
+        setStatus(analysisSteps[i]);
+
+        if (i < analysisSteps.length - 1) {
+          await new Promise((resolve) => setTimeout(resolve, 450));
+        }
+      }
+
+      const storedAudit =
+        window.localStorage.getItem("scopeguard-current-audit");
+
+      const sourceAudit = storedAudit
+        ? JSON.parse(storedAudit)
+        : {};
+
+      const sow =
+        sourceAudit.sow ||
+        "Build 3 React components: UserProfile, Dashboard and Settings.";
+
+      const prTitle =
+        sourceAudit.title ||
+        "Add PDF Export";
+
+      const prChanges =
+        sourceAudit.change ||
+        "Added PDF export functionality and supporting export controls.";
+
+      const response = await fetch("/api/analyze-scope", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sow,
+          prTitle,
+          prChanges,
+          hourlyRate: sourceAudit.hourlyRate || 1,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.analysis) {
+        throw new Error(
+          data.error || "Scope analysis failed"
+        );
+      }
+
+      const result = data.analysis;
+
+      const nextAudit = {
+        ...sourceAudit,
+        pr: sourceAudit.pr || "#42",
+        title: prTitle,
+        sow,
+        change: prChanges,
+        status:
+          result.scopeStatus === "out_of_scope"
+            ? "Out of Scope"
+            : "Within Scope",
+        confidence: result.confidence,
+        estimate: `${result.estimatedHours} hours`,
+        hourlyRate: result.hourlyRate,
+        overage: `${result.settlement} USDC`,
+        settlementStatus:
+          result.scopeStatus === "out_of_scope"
+            ? "Required"
+            : "Not required",
+        settlementAmount: String(result.settlement),
+        settlementCurrency: result.currency,
+        detectedChanges: result.detectedChanges,
+        newScopeItems: result.newScopeItems,
+        existingScopeItems: result.existingScopeItems,
+        reasoning: result.reasoning,
+        recommendation: result.recommendation,
+      };
+
+      window.localStorage.setItem(
+        "scopeguard-current-audit",
+        JSON.stringify(nextAudit)
+      );
+
+      setAudit(nextAudit);
+      setAnalysisState("complete");
+      setStatus("AI analysis complete");
+    } catch (error) {
+      setAnalysisState("error");
+
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Analysis failed";
+
+      setStatus(message);
+      setExecutionMessage(
+        "AI analysis did not complete. Please try again."
+      );
     }
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    setAnalysisState("complete");
-    setStatus("AI analysis complete");
   };
+
+  // Settlement execution implementation retained for the execution control.
   const handleExecute = async () => {
+    // Prevent duplicate payment execution.
+    if (executionStarted.current) {
+      return;
+    }
+
+    // If this settlement was already completed, never pay again.
+    const storedSettlement =
+      window.localStorage.getItem("scopeguard-settlement");
+
+    if (storedSettlement) {
+      try {
+        const settlement = JSON.parse(storedSettlement);
+
+        if (
+          settlement.status === "Settled" &&
+          settlement.transactionHash
+        ) {
+          setTransactionHash(settlement.transactionHash);
+          setTransactionLink(
+            settlement.transactionLink || ""
+          );
+
+          setAnalysisState("success");
+          setStatus("Settlement completed");
+          setExecutionMessage(
+            "Settlement already confirmed. No additional payment was sent."
+          );
+
+          return;
+        }
+      } catch {
+        console.warn(
+          "Could not verify existing settlement."
+        );
+      }
+    }
+
+    executionStarted.current = true;
+
     setAnalysisState("executing");
     setExecutionMessage("");
     setTransactionHash("");
@@ -92,7 +323,7 @@ headers: {
 "Content-Type": "application/json",
 },
 body: JSON.stringify({
-amount: "3",
+amount: audit?.settlementAmount || "3",
 recipientAddress: "0x0D392ba82e6c86192cB92fd568BDCf33e9d2295E",
 network: "84532",
 execute: true,
@@ -147,7 +378,6 @@ execute: true,
     }
   };
   const isAnalyzing = analysisState === "analyzing";
-  const isExecuting = analysisState === "executing";
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-7xl px-6 py-10">
@@ -179,6 +409,27 @@ execute: true,
                 Compare the pull request against the original agreement.
               </p>
             </div>
+
+            {analysisState === "success" && (
+              <span className="w-fit rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-4 py-2 text-sm font-semibold text-emerald-400 md:ml-auto">
+                Settlement confirmed ✓
+              </span>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-3">
+
+            {analysisState === "complete" &&
+              audit?.status === "Out of Scope" && (
+                <button
+                  type="button"
+                  onClick={handleExecute}
+                  className="rounded-xl bg-cyan-400 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+                >
+                  Approve {audit?.overage || "3 USDC"} Settlement →
+                </button>
+              )}
+
+
           </div>
           {/* Analysis progress */}
           {isAnalyzing && (
@@ -231,11 +482,22 @@ execute: true,
                   GitHub Pull Request
                 </p>
                 <h2 className="mt-1 text-xl font-semibold">
-                  PR #42 — Add PDF Export
+                  {audit?.pr || "#42"} —{" "}
+                  {audit?.title || "Add PDF Export"}
                 </h2>
               </div>
-              <span className="w-fit rounded-full bg-red-500/10 px-3 py-1 text-sm text-red-400">
-                Out of scope
+              <span
+                className={`w-fit rounded-full px-3 py-1 text-sm ${
+                  audit?.status === "Within Scope"
+                    ? "bg-emerald-500/10 text-emerald-400"
+                    : "bg-red-500/10 text-red-400"
+                }`}
+              >
+                {audit?.status === "Within Scope"
+                  ? "Within scope"
+                  : audit?.status === "Out of Scope"
+                    ? "Out of scope"
+                    : "Awaiting analysis"}
               </span>
             </div>
             <div className="space-y-4">
@@ -245,11 +507,15 @@ execute: true,
                   Original SOW
                 </p>
                 <p className="mt-2 text-slate-700 dark:text-slate-300">
-                  Build 3 React components:
-                  <span className="font-medium text-slate-950 dark:text-white">
-                    {" "}
-                    UserProfile, Dashboard and Settings.
-                  </span>
+                  {audit?.sow || (
+                    <>
+                      Build 3 React components:
+                      <span className="font-medium text-slate-950 dark:text-white">
+                        {" "}
+                        UserProfile, Dashboard and Settings.
+                      </span>
+                    </>
+                  )}
                 </p>
               </div>
               {/* Detected Change */}
@@ -263,8 +529,8 @@ execute: true,
                   </span>
                 </div>
                 <p className="mt-2 text-slate-700 dark:text-slate-200">
-                  Added PDF export functionality and supporting
-                  export controls.
+                  {audit?.change ||
+                    "Added PDF export functionality and supporting export controls."}
                 </p>
               </div>
               {/* AI Findings */}
@@ -274,7 +540,7 @@ execute: true,
                     AI Findings
                   </p>
                   <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-400">
-                    0% confidence
+                    {audit?.confidence != null ? `${audit.confidence}%` : "—"} confidence
                   </span>
                 </div>
                 <div className="space-y-3">
@@ -296,15 +562,15 @@ execute: true,
               <div className="grid gap-4 sm:grid-cols-3">
                 <Metric
                   label="Estimated work"
-                  value="0 hours"
+                  value={audit?.estimate || "—"}
                 />
                 <Metric
                   label="Hourly rate"
-                  value="$0"
+                  value={audit?.hourlyRate != null ? `$${audit.hourlyRate} USDC/hr` : "—"}
                 />
                 <Metric
                   label="Overage"
-                  value="$0 USDC"
+                  value={audit?.overage || "—"}
                 />
               </div>
             </div>
@@ -313,94 +579,92 @@ execute: true,
           <div className="rounded-2xl border border-[#e3ddc9] dark:border-slate-800 bg-[#fbf9f2] dark:bg-slate-900 p-6">
             <div className="flex items-center justify-between">
               <p className="text-sm text-slate-700 dark:text-slate-300">
-                AI Decision
+                AI DECISION
               </p>
               <span className="rounded-full bg-cyan-400/10 px-2.5 py-1 text-xs text-cyan-400">
                 AI
               </span>
             </div>
+
             <h2 className="mt-3 text-2xl font-semibold">
-              Settlement required
+              {audit?.status === "Within Scope"
+                ? "Within scope"
+                : audit?.status === "Out of Scope"
+                  ? "Settlement required"
+                  : "Awaiting analysis"}
             </h2>
+
             <p className="mt-4 text-sm leading-6 text-slate-700 dark:text-slate-300">
-              ScopeGuard determined that the PDF export feature
-              was not included in the original agreement.
+              {audit?.reasoning ||
+                "ScopeGuard determined whether the pull request matches the original agreement."}
             </p>
-            {/* Scope Score */}
-            <div className="my-6 rounded-xl border border-[#e3ddc9] dark:border-slate-800 bg-[#ece6d5] dark:bg-slate-950 p-4">
+
+            {/* AI confidence */}
+            <div className="mt-6">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-slate-700 dark:text-slate-300">
-                  Out-of-scope score
+                  AI confidence
                 </span>
-                <span className="text-lg font-bold text-red-400">
-                  0%
+                <span className="text-sm font-bold text-red-400">
+                  {audit?.confidence != null
+                    ? `${audit.confidence}%`
+                    : "—"}
                 </span>
               </div>
-              <div className="mt-3 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
+
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
                 <div
-                  className="h-full rounded-full bg-red-400"
-                  style={{ width: "0%" }}
+                  className="h-full rounded-full bg-red-400 transition-all duration-500"
+                  style={{
+                    width:
+                      audit?.confidence != null
+                        ? `${audit.confidence}%`
+                        : "0%",
+                  }}
                 />
               </div>
             </div>
-            {/* Settlement Details */}
-            <div className="my-6 rounded-xl bg-[#ece6d5] dark:bg-slate-950 p-4">
-              <div className="flex justify-between gap-4">
-                <span className="text-slate-700 dark:text-slate-300">
+
+            {/* Settlement details */}
+            <div className="mt-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-slate-700 dark:text-slate-300">
                   Freelancer
                 </span>
-                <span className="font-medium">
-                  0x71...9A42
+                <span className="text-sm font-medium">
+                  {audit?.developer || "Demo Developer"}
                 </span>
               </div>
-              <div className="mt-4 flex justify-between gap-4">
-                <span className="text-slate-700 dark:text-slate-300">
+
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-slate-700 dark:text-slate-300">
                   Settlement
                 </span>
-                <span className="font-semibold text-cyan-400">
-                  0 USDC
+                <span className="text-sm font-semibold text-cyan-400">
+                  {audit?.overage || "—"}
                 </span>
               </div>
             </div>
-            {/* Execute */}
-            <button
-              onClick={handleExecute}
-              disabled={
-                isExecuting ||
-                isAnalyzing ||
-                analysisState !== "complete"
-              }
-              className="w-full rounded-full bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              {isExecuting
-                ? "Executing..."
-                : analysisState === "complete"
-                ? "Approve & Execute"
-                : "Run AI Analysis First"}
-            </button>
-            {/* Status */}
-            <div className="mt-4 rounded-lg border border-[#e3ddc9] dark:border-slate-800 bg-[#ece6d5] dark:bg-slate-950 px-3 py-3">
-              <p className="text-center text-xs text-slate-700 dark:text-slate-300 dark:text-slate-400">
-                {status}
-              </p>
-            </div>
-            {executionMessage && (
-              <div
-                className={`mt-3 rounded-lg border px-3 py-3 ${
-                  analysisState === "success"
-                    ? "border-emerald-500/20 bg-emerald-500/5 text-emerald-400"
-                    : "border-red-500/20 bg-red-500/5 text-red-400"
-                }`}
-              >
-                <p className="text-center text-xs">
-                  {executionMessage}
-                </p>
-                {analysisState === "success" && transactionHash && (
-                  <p className="mt-2 text-center text-xs text-slate-700 dark:text-slate-300">
-                    Tx: {transactionHash.slice(0, 10)}...{transactionHash.slice(-8)}
+
+            {/* Confirmed onchain payment */}
+            {analysisState === "success" && transactionHash && (
+              <div className="mt-6">
+                <div className="rounded-xl border border-emerald-400/40 bg-emerald-500/20 px-4 py-3 text-center">
+                  <p className="text-sm font-semibold text-emerald-400">
+                    ✓ {audit?.overage || "3 USDC"} Paid on Base Sepolia
                   </p>
-                )}
-                {analysisState === "success" && transactionLink && (
+                </div>
+
+                <p className="mt-2 text-center text-xs text-slate-700 dark:text-slate-300">
+                  Payment Confirmed &amp; Settled Onchain
+                </p>
+
+                <p className="mt-2 text-center text-xs text-slate-500 dark:text-slate-400">
+                  Tx: {transactionHash.slice(0, 10)}...
+                  {transactionHash.slice(-8)}
+                </p>
+
+                {transactionLink && (
                   <p className="mt-2 text-center">
                     <a
                       href={transactionLink}
@@ -412,6 +676,21 @@ execute: true,
                     </a>
                   </p>
                 )}
+              </div>
+            )}
+
+            {/* Pending / execution status */}
+            {executionMessage && !transactionHash && (
+              <div
+                className={`mt-6 rounded-xl border px-4 py-3 ${
+                  analysisState === "error"
+                    ? "border-red-500/20 bg-red-500/5 text-red-400"
+                    : "border-cyan-500/20 bg-cyan-500/5 text-cyan-400"
+                }`}
+              >
+                <p className="text-center text-xs">
+                  {executionMessage}
+                </p>
               </div>
             )}
           </div>
