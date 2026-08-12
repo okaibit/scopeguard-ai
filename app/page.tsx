@@ -135,15 +135,6 @@ execute: true,
                 Compare the pull request against the original agreement.
               </p>
             </div>
-            <button
-              onClick={runAnalysis}
-              disabled={isAnalyzing || isExecuting}
-              className="rounded-full bg-cyan-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isAnalyzing
-                ? "> AI Analyzing..."
-                : "> Run AI Analysis"}
-            </button>
           </div>
           {/* Analysis progress */}
           {isAnalyzing && (
@@ -239,7 +230,7 @@ execute: true,
                     AI Findings
                   </p>
                   <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-400">
-                    87% confidence
+                    97% confidence
                   </span>
                 </div>
                 <div className="space-y-3">
@@ -261,15 +252,15 @@ execute: true,
               <div className="grid gap-4 sm:grid-cols-3">
                 <Metric
                   label="Estimated work"
-                  value="3 hours"
+                  value="0 hours"
                 />
                 <Metric
                   label="Hourly rate"
-                  value="$1"
+                  value="$0"
                 />
                 <Metric
                   label="Overage"
-                  value="$3 USDC"
+                  value="$0 USDC"
                 />
               </div>
             </div>
@@ -298,13 +289,13 @@ execute: true,
                   Out-of-scope score
                 </span>
                 <span className="text-lg font-bold text-red-400">
-                  87%
+                  97%
                 </span>
               </div>
               <div className="mt-3 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
                 <div
                   className="h-full rounded-full bg-red-400"
-                  style={{ width: "87%" }}
+                  style={{ width: "97%" }}
                 />
               </div>
             </div>
@@ -323,7 +314,7 @@ execute: true,
                   Settlement
                 </span>
                 <span className="font-semibold text-cyan-400">
-                  3 USDC
+                  0 USDC
                 </span>
               </div>
             </div>
