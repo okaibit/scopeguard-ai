@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 type AnalysisState =
   | "idle"
   | "analyzing"
@@ -18,11 +18,55 @@ export default function Home() {
   const [analysisState, setAnalysisState] =
     useState<AnalysisState>("idle");
   const [analysisStep, setAnalysisStep] = useState(0);
-  const [status, setStatus] = useState("Awaiting AI analysis");
+  const [status, setStatus] = useState("AI analysis complete");
   const [executionMessage, setExecutionMessage] = useState("");
   const [transactionHash, setTransactionHash] = useState("");
   const [transactionLink, setTransactionLink] = useState("");
-  const runAnalysis = async () => {
+
+ useEffect(() => {
+const storedAudit = window.localStorage.getItem("scopeguard-current-audit");
+const storedSettlement = window.localStorage.getItem("scopeguard-settlement");
+
+if (storedAudit) {
+try {
+const audit = JSON.parse(storedAudit);
+
+if (
+audit.status === "Out of Scope" ||
+audit.status === "Approved" ||
+audit.status === "Settled"
+) {
+setAnalysisState("complete");
+setStatus(
+audit.status === "Settled"
+? "Settlement completed"
+: audit.status === "Approved"
+? "Settlement approved"
+: "AI analysis complete"
+);
+}
+} catch {
+console.warn("Could not read the saved ScopeGuard audit.");
+}
+}
+
+if (storedSettlement) {
+try {
+const settlement = JSON.parse(storedSettlement);
+
+if (settlement.status === "Settled") {
+setTransactionHash(settlement.transactionHash || "");
+setTransactionLink(settlement.transactionLink || "");
+setAnalysisState("success");
+setStatus("Settlement completed");
+}
+} catch {
+console.warn("Could not read the saved ScopeGuard settlement.");
+}
+}
+}, []);
+
+ const runAnalysis = async () => {
     setAnalysisState("analyzing");
     setAnalysisStep(0);
     setStatus(analysisSteps[0]);
@@ -230,7 +274,7 @@ execute: true,
                     AI Findings
                   </p>
                   <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-400">
-                    97% confidence
+                    0% confidence
                   </span>
                 </div>
                 <div className="space-y-3">
@@ -289,13 +333,13 @@ execute: true,
                   Out-of-scope score
                 </span>
                 <span className="text-lg font-bold text-red-400">
-                  97%
+                  0%
                 </span>
               </div>
               <div className="mt-3 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
                 <div
                   className="h-full rounded-full bg-red-400"
-                  style={{ width: "97%" }}
+                  style={{ width: "0%" }}
                 />
               </div>
             </div>
